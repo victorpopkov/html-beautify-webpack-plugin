@@ -4,7 +4,12 @@ const _ = require('lodash')
 const chalk = require('chalk')
 const assert = require('assert')
 const beautify = require('js-beautify').html
-const webpackLatest = !_.isNil(webpack.version) && /.*4(\.\d+){0,2}/gi.test(webpack.version)
+const webpackLatest = (() => {
+    let match;
+    if (!_.isNil(webpack.version) && (match = /.*?(\d+)(?:\.\d+){0,2}/gi.exec(webpack.version))) {
+        return Number(match[1]) >= 4;
+    }
+})();
 
 function HtmlBeautifyPlugin ({ config = {}, replace } = { config: {}, replace: [] }) {
 
